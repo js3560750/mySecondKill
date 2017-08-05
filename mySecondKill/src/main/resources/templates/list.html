@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>秒杀商品列表</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
+<!-- 新 Bootstrap 核心 CSS 文件 -->
+<link
+	href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	rel="stylesheet">
+</head>
+<body>
+	<div class="container">
+		<div class="panel panel-default">
+			<div class="panel-heading text-center">
+				<h2>秒杀列表</h2>
+			</div>
+			<div class="panel-body">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>名称</th>
+							<th>库存</th>
+							<th>开始时间</th>
+							<th>结束时间</th>
+							<th>创建时间</th>
+							<th>详情页</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- thymeleaf标签全部写在标签里面，标签外面也能写静态的数据，真正实现一个页面里，前后端数据分离！！！ -->
+							<tr th:each="sk:${list}">	<!-- list是后端传过来的Model里的变量名 -->
+								<td th:text="${sk.name}">名称</td>	
+								<td th:text="${sk.number}">库存</td>
+								<td th:text="${#dates.format(sk.startTime,'yyyy-MM-dd HH:mm:ss')}">秒杀开启时间</td>
+								<td th:text="${#dates.format(sk.endTime,'yyyy-MM-dd HH:mm:ss')}">秒杀结束时间</td>
+								<td th:text="${#dates.format(sk.createTime,'yyyy-MM-dd HH:mm:ss')}">秒杀创建时间</td>
+								<td><a class="btn btn-info"
+									th:href="@{'/'+${sk.seckillId}+'/detail'}" target="_blank">详情页</a></td>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+
+			</div>
+		</div>
+	</div>
+
+
+
+	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+	<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+
+	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>
