@@ -8,14 +8,17 @@ var seckill = {
     	//注意这里的调用的是访问地址，http://127.0.0.1:8080/time/now   
     	//要与后端控制器里提供的地址一致，我自己控制器里访问地址是不带seckill的
     	//之前报404错误就是没找到该地址，地址写错了，写成了/seckill/time/now，多了一个seckill
+    	
+    	//部署到服务器上时，这里的路径要写../time/now，不能写成/time/now
+    	//否则会找不到路径，貌似js里的路径和有关js的路径都要这样写！！！！
         now: function () {
-            return '/time/now';	
+            return '../time/now';	
         },
         exposer: function (seckillId) {
-            return '/' + seckillId + '/exposer';
+            return '../' + seckillId + '/exposer';
         },
         execution: function (seckillId, md5) {
-            return '/' + seckillId + '/' + md5 + '/execution';
+            return '../' + seckillId + '/' + md5 + '/execution';
         }
     },
 
@@ -50,9 +53,9 @@ var seckill = {
                     var inputPhone = $('#killPhoneKey').val();
                     console.log("inputPhone: " + inputPhone);
                     if (seckill.validatePhone(inputPhone)) {
-                        //电话写入cookie(5天过期)
+                        //电话写入cookie(1天过期)
                
-                    	$.cookie('userPhone', inputPhone, { expires: 5 });
+                    	$.cookie('userPhone', inputPhone, { expires: 1 });
                         //验证通过　　刷新页面
                         window.location.reload();
                     } else {

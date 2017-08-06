@@ -6,7 +6,7 @@
 	<groupId>com.jinsong</groupId>
 	<artifactId>mySecondKill</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>	<!-- 打包部署到服务器时，这里要把jar改成war -->
 
 	<name>mySecondKill</name>
 	<description>Demo project for Spring Boot</description>
