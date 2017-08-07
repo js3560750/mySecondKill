@@ -83,7 +83,7 @@ public class SeckillController {
 	}
 
 	/**
-	 * ajax,JSON,暴露秒杀接口
+	 * ajax,JSON,暴露秒杀接口，何时调用这个链接是写在seckill.js文件里的
 	 */
 	@RequestMapping(value = "/{seckillId}/exposer", method = RequestMethod.GET, produces = {
 			"application/json;charset=UTF-8" }) // produces指定返回结果是一个JSON
@@ -106,7 +106,7 @@ public class SeckillController {
 	}
 
 	/**
-	 * 执行秒杀
+	 * 执行秒杀，何时调用这个链接是写在seckill.js文件里的
 	 */
 	@RequestMapping(value = "/{seckillId}/{md5}/execution", method = RequestMethod.POST, produces = {
 			"application/json;charset=UTF-8" })

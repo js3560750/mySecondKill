@@ -32,7 +32,7 @@
 
 
 	<dependencies>
-		<!-- thymeleaf-->
+		<!-- thymeleaf -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
@@ -61,6 +61,25 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- Java操作Redis的Jedis工具 -->
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+		</dependency>
+		<!-- 在Redis缓存中使用的序列化工具protostuff -->
+		<!-- 下面的<dependencyManagement>中也要添加一段依赖 -->
+		<dependency>
+			<groupId>io.protostuff</groupId>
+			<artifactId>protostuff-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.protostuff</groupId>
+			<artifactId>protostuff-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.protostuff</groupId>
+			<artifactId>protostuff-runtime</artifactId>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>
@@ -69,6 +88,13 @@
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
 				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>io.protostuff</groupId>
+				<artifactId>protostuff-bom</artifactId>
+				<version>1.3.5</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>

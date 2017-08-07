@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
+import com.jinsong.dao.RedisDAO;
 import com.jinsong.dao.SeckillDAO;
 import com.jinsong.dao.SuccessKilledDAO;
 import com.jinsong.dto.Exposer;
@@ -22,6 +23,8 @@ import com.jinsong.model.Seckill;
 import com.jinsong.model.SuccessKilled;
 import com.jinsong.service.SeckillService;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
+
 @Service
 public class SeckillServiceImpl implements SeckillService {
 
@@ -33,6 +36,9 @@ public class SeckillServiceImpl implements SeckillService {
 
 	@Autowired
 	private SuccessKilledDAO successKillDAO;
+	
+	@Autowired
+	private RedisDAO redisDAO;
 
 	// 定义MD5所用的盐
 	private static final String salt = "sdfsdfds2h3iu4y98@&$Yhoihofds";
@@ -75,9 +81,31 @@ public class SeckillServiceImpl implements SeckillService {
 	@Override
 	public Exposer exportSeckillUrl(long seckillId) {
 
-		// 获得秒杀的商品种类
-		Seckill seckill = seckillDAO.queryById(seckillId);
+		//采用Redis缓存商品种类ID，避免频繁访问Mysql，也就是优化下面这个数据库操作
+		
+		//Seckill seckill = seckillDAO.queryById(seckillId);	// 获得秒杀的商品种类
 
+		//利用Redis优化数据库操作
+		//先从Redis缓存中获取seckill对象
+		Seckill seckill =redisDAO.getSeckill(seckillId);
+		
+
+		if(seckill==null) {
+			//如果Redis中没有，则从数据库中获取seckill对象
+			seckill=seckillDAO.queryById(seckillId);
+			
+			if(seckill==null) {
+				//如果数据库中也没有，则说明没有该商品信息，返回false
+				return new Exposer(false, seckillId);
+			}else {
+				//如果数据库中有该商品信息，将该信息存入Redis，以便用户刷新页面后直接从Redis中获取。
+				String result =redisDAO.setSeckill(seckill);
+				
+			}
+		}else {
+			System.out.println("seckil in Redis not null");
+		}
+		
 		// 当前时间
 		Date nowTime = new Date();
 

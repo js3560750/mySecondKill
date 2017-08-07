@@ -1,6 +1,12 @@
 //存放主要交互逻辑的js代码
 // javascript 模块化(package.类.方法)
 
+//逻辑是：首先执行detail：{}里的init初始化函数，在这里面验证是否手机号登录，如果登录了，调用countDown进行倒计时判断
+//countDown里判断秒杀是已经结束了还是未开始还是正在进行中
+//如果countDown里判断秒杀未开始，则进入倒计时，倒计时结束时调用handlerSeckill暴露秒杀地址，暴露秒杀地址是访问链接/{seckillId}/exposer调用后端控制器函数exposer
+//如果countDown里判断秒杀已经开始，则直接调用handlerSeckill暴露秒杀地址
+//在handlerSeckill里执行秒杀操作，即访问链接/{seckillId}/{md5}/execution调用后端控制器的秒杀函数execute
+
 var seckill = {
 
     //封装秒杀相关ajax的url
@@ -14,9 +20,11 @@ var seckill = {
         now: function () {
             return '../time/now';	
         },
+        //暴露秒杀地址
         exposer: function (seckillId) {
             return '../' + seckillId + '/exposer';
         },
+        //执行秒杀
         execution: function (seckillId, md5) {
             return '../' + seckillId + '/' + md5 + '/execution';
         }
